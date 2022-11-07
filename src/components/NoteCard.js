@@ -6,6 +6,7 @@ import { Avatar, IconButton, makeStyles, Typography } from '@material-ui/core';
 import { DeleteOutlined } from '@material-ui/icons'
 import { blue, green, pink, yellow } from '@material-ui/core/colors';
 
+// Style specification
 const useStyles = makeStyles({
     avatar: {
         backgroundColor: (note) => {
@@ -23,6 +24,7 @@ const useStyles = makeStyles({
     }
 })
 
+// Notecard class
 export default function NoteCard({ note, handleDelete }) {
     const classes = useStyles(note)
 
@@ -37,6 +39,7 @@ export default function NoteCard({ note, handleDelete }) {
 
                         </Avatar>
                     }
+                    // Delete note
                     action={
                         <IconButton onClick={() => handleDelete(note.id)}>
                             <DeleteOutlined />
