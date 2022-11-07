@@ -12,7 +12,8 @@ export default function Notes() {
       .then(res => res.json())
       .then(data => setNotes(data))
   }, [])
-
+  
+  // Delete note function
   const handleDelete = async (id) => {
     await fetch('http://localhost:8000/notes/' + id, {
       method: 'DELETE'
@@ -21,7 +22,8 @@ export default function Notes() {
     const newNotes = notes.filter(note => note.id != id)
     setNotes(newNotes)
   }
-
+  
+  // Layout of notes
   return (
     <Container>
       <Grid container spacing={3}>
