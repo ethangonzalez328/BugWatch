@@ -14,6 +14,7 @@ import Avatar from '@material-ui/core/Avatar'
 
 const drawerWidth = 240
 
+// Style specification
 const useStyles = makeStyles((theme) => {
     return {
         page: {
@@ -49,11 +50,13 @@ const useStyles = makeStyles((theme) => {
     }
 })
 
+// Layout of app
 export default function Layout({ children }) {
     const classes = useStyles()
     const history = useHistory()
     const location = useLocation()
-
+    
+    // Sidebar options
     const menuItems = [
         {
             text: 'My Notes',
