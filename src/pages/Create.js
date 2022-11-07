@@ -11,6 +11,7 @@ import FormControl from '@material-ui/core/FormControl'
 import FormLabel from '@material-ui/core/FormLabel';
 import { useHistory } from 'react-router-dom';
 
+// Style specification
 const useStyles = makeStyles({
   field: {
     marginTop: 20,
@@ -19,6 +20,7 @@ const useStyles = makeStyles({
   }
 })
 
+// Create note button function
 export default function Create() {
   const classes = useStyles()
   const history = useHistory()
@@ -28,6 +30,7 @@ export default function Create() {
   const [detailsError, setDetailsError] = useState('')
   const [category, setCategory] = useState('todos')
 
+  // Submits note to be added
   const handleSubmit = (e) => {
     e.preventDefault()
     setTitleError(false)
@@ -39,7 +42,7 @@ export default function Create() {
     if (details == '') {
       setDetailsError(true)
     }
-
+    // Both the titles and details are required for a note to be valid
     if (title && details) {
       fetch('http://localhost:8000/notes', {
         method: 'POST',
@@ -48,8 +51,9 @@ export default function Create() {
       }).then(() => history.push('/'))
     }
   }
-
+  
   return (
+    // Layout of create note button
     <Container size="sm">
       <Typography
         variant="h6" 
@@ -60,7 +64,9 @@ export default function Create() {
         Create a New Note
       </Typography>
 
+      // Layout of submission menu
       <form noValidate autoComplete="off" onSubmit={handleSubmit}>
+        // Title of note
         <TextField 
           onChange={(e) => setTitle(e.target.value)}
           className={classes.field}
@@ -71,6 +77,7 @@ export default function Create() {
           required
           error={titleError}
         />
+        // Details of note
         <TextField 
           onChange={(e) => setDetails(e.target.value)}
           className={classes.field}
@@ -83,7 +90,7 @@ export default function Create() {
           required
           error={detailsError}
         />
-
+        // Category of note
         <FormControl className={classes.field}>
           <FormLabel>Note Category</FormLabel>
           <RadioGroup value={category} onChange={(e) => setCategory(e.target.value)}>
@@ -93,7 +100,7 @@ export default function Create() {
             <FormControlLabel value="work" control={<Radio />} label="Work" />
           </RadioGroup>
         </FormControl>
-
+      // Submit button layout
       <Button
         type="submit" 
         color="secondary" 
@@ -103,9 +110,6 @@ export default function Create() {
         Submit
       </Button>
       </form>
-
-      
-
     </Container>
   )
 }
