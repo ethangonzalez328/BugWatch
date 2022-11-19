@@ -1,115 +1,111 @@
 import React, { useState } from 'react'
-import Typography from '@material-ui/core/Typography'
-import Button from '@material-ui/core/Button'
-import Container from '@material-ui/core/Container'
-import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
-import { FormControlLabel, makeStyles } from '@material-ui/core'
-import TextField from '@material-ui/core/TextField'
-import Radio from '@material-ui/core/Radio'
-import RadioGroup from '@material-ui/core/RadioGroup'
-import FormControl from '@material-ui/core/FormControl'
-import FormLabel from '@material-ui/core/FormLabel';
+import { Typography, Button, Container, makeStyles, TextField } from '@material-ui/core'
+import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from '@material-ui/core'
+import BugReportOutlinedIcon from '@mui/icons-material/BugReportOutlined'
 import { useHistory } from 'react-router-dom';
 
-// Style specification
 const useStyles = makeStyles({
-  field: {
-    marginTop: 20,
-    marginBottom: 30,
-    display: 'block'
-  }
+	field: {
+		marginTop: 10,
+		marginBottom: 10,
+		display: "block"
+	}
 })
 
-// Create note button function
 export default function Create() {
-  const classes = useStyles()
-  const history = useHistory()
-  const [title, setTitle] = useState('')
-  const [details, setDetails] = useState('')
-  const [titleError, setTitleError] = useState('')
-  const [detailsError, setDetailsError] = useState('')
-  const [category, setCategory] = useState('todos')
+	const classes = useStyles()
+	const history = useHistory()
+	// Text and error data
+	const [title, setTitle] = useState('')
+	const [details, setDetails] = useState('')
+	const [titleError, setTitleError] = useState(false)
+	const [detailsError, setDetailsError] = useState(false)
+	const [priority, setPriority] = useState("!")
 
-  // Submits note to be added
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    setTitleError(false)
-    setDetailsError(false)
+	// Handles events after submit button is pressed
+	const handleSubmit = (e) => {
+		// Prevents default submission behavior
+		e.preventDefault()
 
-    if (title == '') {
-      setTitleError(true)
-    }
-    if (details == '') {
-      setDetailsError(true)
-    }
-    // Both the titles and details are required for a note to be valid
-    if (title && details) {
-      fetch('http://localhost:8000/notes', {
-        method: 'POST',
-        headers: {"Content-type": "application/json"},
-        body: JSON.stringify({ title, details, category})
-      }).then(() => history.push('/'))
-    }
-  }
-  
-  return (
-    // Layout of create note button
-    <Container size="sm">
-      <Typography
-        variant="h6" 
-        color="textSecondary"
-        component="h2"
-        gutterBottom
-      >
-        Create a New Note
-      </Typography>
+		// Initialize error states
+		setTitleError(false)
+		setDetailsError(false)
 
-      // Layout of submission menu
-      <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-        // Title of note
-        <TextField 
-          onChange={(e) => setTitle(e.target.value)}
-          className={classes.field}
-          label="Note Title"
-          variant="outlined"
-          color="secondary"
-          fullWidth
-          required
-          error={titleError}
-        />
-        // Details of note
-        <TextField 
-          onChange={(e) => setDetails(e.target.value)}
-          className={classes.field}
-          label="Details"
-          variant="outlined"
-          color="secondary"
-          multiline
-          rows={4}
-          fullWidth
-          required
-          error={detailsError}
-        />
-        // Category of note
-        <FormControl className={classes.field}>
-          <FormLabel>Note Category</FormLabel>
-          <RadioGroup value={category} onChange={(e) => setCategory(e.target.value)}>
-            <FormControlLabel value="money" control={<Radio />} label="Money" />
-            <FormControlLabel value="todos" control={<Radio />} label="Todos" />
-            <FormControlLabel value="reminders" control={<Radio />} label="Reminders" />
-            <FormControlLabel value="work" control={<Radio />} label="Work" />
-          </RadioGroup>
-        </FormControl>
-      // Submit button layout
-      <Button
-        type="submit" 
-        color="secondary" 
-        variant="contained"
-        endIcon={<KeyboardArrowRightIcon />}
-      >
-        Submit
-      </Button>
-      </form>
-    </Container>
-  )
+		// If title or detail fields are empty, return the respective error
+		if (title == '') {
+			setTitleError(true)
+		}
+		if (details == '') {
+			setDetailsError(true)
+		}
+		// If title and detail fields are non-empty, save these values
+		if (title && details) {
+			const timestamp = new Date()
+			fetch('http://localhost:3001/notes', {
+				method: 'POST',
+				headers: {"Content-type": "application/json"},
+				body: JSON.stringify({title, details, priority, timestamp})
+			}).then(() => history.push('/'))
+		}
+	}
+
+	return (
+		<Container>
+			{/* Page title */}
+			<Typography
+				variant="h6"
+				component="h2"
+				color="textPrimary"
+				gutterBottom
+			>
+				Create New Bug
+			</Typography>
+
+			{/* Text fields */}
+			<form noValidate autoComplete="off" onSubmit={handleSubmit}>
+				{/* Title field */}
+				<TextField
+					onChange={(e) => setTitle(e.target.value)}
+					className={classes.field}
+					label="Bug Title"
+					variant="outlined"
+					fullWidth
+					required
+					error={titleError}
+				/>
+				{/* Details field */}
+				<TextField
+					onChange={(e) => setDetails(e.target.value)}
+					className={classes.field}
+					label="Details"
+					variant="outlined"
+					multiline
+					minRows={4}
+					fullWidth
+					required
+					error={detailsError}
+				/>
+
+				{/* Priority selection */}
+				<FormControl className={classes.field}>
+					<FormLabel>Priority</FormLabel>
+					<RadioGroup value={priority} onChange={(e) => setPriority(e.target.value)}>
+						<FormControlLabel value="!" control={<Radio />} label="Low"/>
+						<FormControlLabel value="!!" control={<Radio />} label="Medium"/>
+						<FormControlLabel value="!!!" control={<Radio />} label="High"/>
+					</RadioGroup>
+				</FormControl>
+
+				{/* Submit button */}
+				<Button
+					type="submit"
+					color="primary"
+					variant="contained"
+					startIcon={<BugReportOutlinedIcon />}
+				>
+					Submit
+				</Button>
+			</form>
+		</Container>
+	)
 }

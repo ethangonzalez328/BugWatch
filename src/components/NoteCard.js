@@ -1,59 +1,62 @@
 import React from 'react'
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import { Avatar, IconButton, makeStyles, Typography } from '@material-ui/core';
+import { Card, CardHeader, CardContent, IconButton, Typography, makeStyles, Avatar } from '@material-ui/core'
 import { DeleteOutlined } from '@material-ui/icons'
-import { blue, green, pink, yellow } from '@material-ui/core/colors';
+import { green, grey, red, yellow } from '@material-ui/core/colors'
+import { format, parseJSON } from 'date-fns'
 
-// Style specification
 const useStyles = makeStyles({
-    avatar: {
-        backgroundColor: (note) => {
-            if (note.category == 'work') {
-                return yellow[700]
-            }
-            if (note.category == 'money') {
-                return green[500]
-            }
-            if (note.category == 'todos') {
-                return pink[500]
-            }
-            return blue[500]
-        }
-    }
+	// Conditional coloring depending on priority
+	// low: green, medium: yellow, high: red
+	avatar: {
+		backgroundColor: (note) => {
+			if (note.priority == '!') {
+				return green[500]
+			}
+			if (note.priority == '!!') {
+				return yellow[700]
+			}
+			if (note.priority == '!!!') {
+				return red[500]
+			}
+			return grey[500]
+		}
+	}
 })
 
-// Notecard class
-export default function NoteCard({ note, handleDelete }) {
-    const classes = useStyles(note)
+export default function NoteCard({note, handleDelete}) {
+	const classes = useStyles(note)
 
-    return (
-        <div>
-            <Card elevation={1}>
-                <CardHeader 
-                    avatar={
-                        <Avatar className={classes.avatar}>
-                            {note.category[0].toUpperCase()}  
-                            {/* Makes avatar the first letter of the category in upper case */}
-
-                        </Avatar>
-                    }
-                    // Delete note
-                    action={
-                        <IconButton onClick={() => handleDelete(note.id)}>
-                            <DeleteOutlined />
-                        </IconButton>
-                    }
-                    title={note.title}
-                    subheader={note.category}
-                />
-                <CardContent>
-                    <Typography variant="body2" color="textSecondary">
-                        {note.details}
-                    </Typography>
-                </CardContent>
-            </Card>
-        </div>
-    )
+	// Specify note layout
+	return (
+		<div>
+			<Card elevation={1}>
+				<CardHeader
+					// Priority label
+					avatar={
+						<Avatar className={classes.avatar}>
+							{note.priority}
+						</Avatar>
+					}
+					// Delete button
+					action={
+						<IconButton onClick={() => handleDelete(note.id)}>
+							<DeleteOutlined />
+						</IconButton>
+					}
+					// Note title
+					title={note.title}
+				/>
+				<CardContent>
+					{/* Note details */}
+					<Typography variant="body2" color="textPrimary">
+						{note.details}
+					</Typography>
+					{/* Note timestamp */}
+					<Typography variant="body2" color="textSecondary">
+						{format(parseJSON(note.timestamp), 'Y-MM-dd pp')}
+					</Typography>
+				</CardContent>
+			</Card>
+		</div>
+	)
 }
