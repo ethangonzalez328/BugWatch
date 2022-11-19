@@ -1,28 +1,25 @@
 {
   "notes": [
     {
-      "title": "Yoshi's birthday bash",
-      "details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      "category": "reminders",
+      "title": "low",
+      "details": "low priority bug",
+      "priority": "!",
+      "timestamp": "2022-11-19T19:08:38.188Z",
       "id": 1
     },
     {
-      "title": "Complete my ninja training",
-      "details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took.",
-      "category": "work",
+      "title": "medium",
+      "details": "medium priority bug",
+      "priority": "!!",
+      "timestamp": "2022-11-19T19:08:47.356Z",
       "id": 2
     },
     {
-      "title": "Order a pizza!",
-      "details": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.\nLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-      "category": "todos",
+      "title": "high",
+      "details": "high priority bug",
+      "priority": "!!!",
+      "timestamp": "2022-11-19T19:08:55.854Z",
       "id": 3
-    },
-    {
-      "title": "Pay the milkman",
-      "details": "blah blah blah",
-      "category": "money",
-      "id": 4
     }
   ]
 }
