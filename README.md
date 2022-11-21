@@ -8,6 +8,6 @@
   - `npm install`
   - `npm install @material-ui/core`
   - `npm install -g json-server`
-5. In terminal 1, run `json-server --watch data/db.json --port 3001`
+5. In terminal 1, run `json-server --watch data/notes.json --port 3001`
 6. In terminal 2, run `json-server --watch data/users.json --port 3002`
 7. In terminal 3, run `npm run start`
