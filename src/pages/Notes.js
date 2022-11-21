@@ -4,17 +4,16 @@ import NoteCard from '../components/NoteCard'
 import Masonry from 'react-masonry-css'
 
 export default function Notes({uid}) {
-	const notesDB = 'http://localhost:3001/notes'
-	const [notes, setNotes] = useState([])
-
-	// Get notes from local JSON server
 	// IMPORTANT:
 	//// make sure to use the same port as specified in the JSON server
 	//// make sure the port number is not the same as the one used to run the application
+	const notesDB = 'http://localhost:3001/notes'
+	const [notes, setNotes] = useState([])
+
+	// Get notes from local JSON server, filtering by a specific user id
 	useEffect(() => {
 		fetch(notesDB)
 			.then(res => res.json())
-			//.then(data => setNotes(data))
 			.then(data => setNotes(data.filter(note => note.uid == uid)))
 	}, [])
 
