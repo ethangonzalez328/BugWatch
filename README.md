@@ -3,10 +3,11 @@
 # Steps to run:
 1. Download and unzip the code
 2. Download and install a recent version of Node.js if you don't have one already
-3. Run the following commands in a terminal, with the directory set to the project folder
+3. Open 3 terminals, with the directory set to the project folder for each
+4. Run the following commands in any terminal
   - `npm install`
   - `npm install @material-ui/core`
-4. In a separate terminal, run 
   - `npm install -g json-server`
-  - `json-server --watch data/db.json --port 3001`
-5. Run `npm run start` in the previous terminal
+5. In terminal 1, run `json-server --watch data/db.json --port 3001`
+6. In terminal 2, run `json-server --watch data/users.json --port 3002`
+7. In terminal 3, run `npm run start`
