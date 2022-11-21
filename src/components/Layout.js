@@ -48,8 +48,7 @@ const useStyles = makeStyles((theme) => {
 			"&:hover": {
 				backgroundColor: '#e0e0e0'
 			}
-		},
-		
+		}
 	}
 })
 
@@ -63,7 +62,7 @@ export default function Layout({children}) {
 		{
 			text: 'Bugs',
 			icon: <SubjectOutlined color="secondary" />,
-			path: '/'
+			path: '/app'
 		},
 		{
 			text: 'Create Bug',
@@ -71,7 +70,6 @@ export default function Layout({children}) {
 			path: '/create'
 		}
 	]
-
 	return (
 		<div className={classes.root}>
 			{/* App bar */}

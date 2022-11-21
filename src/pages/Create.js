@@ -12,7 +12,7 @@ const useStyles = makeStyles({
 	}
 })
 
-export default function Create() {
+export default function Create({uid}) {
 	const classes = useStyles()
 	const history = useHistory()
 	// Text and error data
@@ -44,8 +44,8 @@ export default function Create() {
 			fetch('http://localhost:3001/notes', {
 				method: 'POST',
 				headers: {"Content-type": "application/json"},
-				body: JSON.stringify({title, details, priority, timestamp})
-			}).then(() => history.push('/'))
+				body: JSON.stringify({title, details, priority, timestamp, uid})
+			}).then(() => history.goBack())
 		}
 	}
 

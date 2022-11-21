@@ -1,8 +1,11 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@material-ui/core'
 import { grey } from '@material-ui/core/colors'
+import { useState } from 'react'
 import Notes from './pages/Notes'
 import Create from './pages/Create'
+import Login from './pages/Login'
+import Register from './pages/Register'
 import Layout from './components/Layout'
 
 const theme = createTheme({
@@ -21,22 +24,46 @@ const theme = createTheme({
 })
 
 function App() {
-	return (
-		<ThemeProvider theme={theme}>
-			<Router>
-				<Layout>
+	const [loginState, setLoginState] = useState(false)
+	const [userid, setUserid] = useState(null)
+
+	if (!loginState) {
+		return (
+			<ThemeProvider theme={theme}>
+				<Router>
+					{/* Login and register menus */}
 					<Switch>
 						<Route exact path="/">
-							<Notes />
+							<Login setLoginState={setLoginState} setUserid={setUserid}/>
 						</Route>
-						<Route path="/create">
-							<Create />
+						<Route path="/register">
+							<Register setLoginState={setLoginState} setUserid={setUserid}/>
 						</Route>
 					</Switch>
-				</Layout>
-			</Router>
-		</ThemeProvider>
-	);
+				</Router>
+			</ThemeProvider>
+		)
+	} else {
+		return (
+			<ThemeProvider theme={theme}>
+				<Router>
+					{/* Application menu */}
+					<Layout>
+						<Switch>
+							{/* Bugs menu */}
+							<Route path="/app">
+								<Notes uid={userid}/>
+							</Route>
+							{/* Create bug menu */}
+							<Route path="/create">
+								<Create uid={userid}/>
+							</Route>
+						</Switch>
+					</Layout>
+				</Router>
+			</ThemeProvider>
+		)
+	}
 }
 
 export default App;
