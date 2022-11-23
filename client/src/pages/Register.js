@@ -17,13 +17,15 @@ export default function Register({setLoginState, setUserid}) {
 	// Text and error data
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
-	const [loginError, setLoginError] = useState(false)
+	const [password2, setPassword2] = useState('')
+	const [usernameError, setUsernameError] = useState(false)
+	const [passwordError, setPasswordError] = useState(false)
 	const [errorTxt, setErrorTxt] = useState('')
 
 	// Gets user data from JSON server
 	const [users, setUsers] = useState([])
 	useEffect(() => {
-		fetch('http://localhost:3002/users')  
+		fetch('http://localhost:3000/users')  
 			.then(res => res.json())
 			.then(data => setUsers(data))
 	}, [])
@@ -34,21 +36,40 @@ export default function Register({setLoginState, setUserid}) {
 		e.preventDefault()
 		e.target.reset()
 
-		// Initialize error state
-		setLoginError(false)
+		// Initialize error states
+		setUsernameError(false)
+		setPasswordError(false)
+		let duplicateUsers = false
 
-		// Check through all users
-		for (let id in users) {
-			let user = users[id];
-			// If username and password matches an entry, go to corresponding app
-			if (user.username == username && user.password == password) {
+		// If password fields are not the same, return an error
+		if (password != password2) {
+			setPasswordError(true)
+			setErrorTxt('Password fields do not match')
+		// Otherwise, attempt to add a user
+		} else {
+			let user = null
+			// Check through all users
+			for (let id in users) {
+				user = users[id];
+				// If a user already exists, return an error
+				if (user.username == username) {
+					duplicateUsers = true
+					setUsernameError(true)
+					setErrorTxt('User ' + username + ' already exists')
+				}
+			}
+			// If the user does not exist, create it
+			if (!duplicateUsers) {
 				setLoginState(true)
 				setUserid(user.id)
-				history.push('app/')
+				// Add to user db
+				fetch('http://localhost:3000/users', {
+					method: 'POST',
+					headers: {"Content-type": "application/json"},
+					body: JSON.stringify({username, password})
+				}).then(() => history.push('/app'))
 			}
 		}
-		setLoginError(true)
-		setErrorTxt('Incorrect username or password.')
 	}
 
 	return (
@@ -60,7 +81,7 @@ export default function Register({setLoginState, setUserid}) {
 				color="textPrimary"
 				gutterBottom
 			>
-				Login
+				Register
 			</Typography>
 
 			{/* Text fields */}
@@ -72,7 +93,7 @@ export default function Register({setLoginState, setUserid}) {
 					label="Username"
 					variant="outlined"
 					required
-					error={loginError}
+					error={usernameError}
 				/>
 				{/* Password field */}
 				<TextField
@@ -82,8 +103,19 @@ export default function Register({setLoginState, setUserid}) {
 					type="password"
 					variant="outlined"
 					required
-					error={loginError}
+					error={passwordError}
 				/>
+				{/* Password verification field */}
+				<TextField
+					onChange={(e) => setPassword2(e.target.value)}
+					className={classes.field}
+					label="Verify Password"
+					type="password"
+					variant="outlined"
+					required
+					error={passwordError}
+				/>
+
 				{/* Register button */}
 				<Button
 					type="submit"
@@ -91,12 +123,12 @@ export default function Register({setLoginState, setUserid}) {
 					variant="contained"
 					startIcon={<HowToRegOutlinedIcon />}
 				>
-					Log in
+					Register
 				</Button>
 			</form>
 			<br />
 			<Typography>
-				<Link to="/register">Create an account</Link>
+				<Link to="/">Log into an account</Link>
 			</Typography>
 			<br />
 			<Typography

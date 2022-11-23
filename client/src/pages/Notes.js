@@ -43,7 +43,7 @@ export default function Notes({uid}) {
 	// IMPORTANT:
 	//// make sure to use the same port as specified in the JSON server
 	//// make sure the port number is not the same as the one used to run the application
-	const notesDB = 'http://localhost:3001/notes'
+	const notesDB = 'http://localhost:3000/notes'
 	const [notes, setNotes] = useState([])
 
 	// Get notes from local JSON server, filtering by a specific user id
