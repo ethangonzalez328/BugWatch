@@ -1,7 +1,7 @@
 from src.modules.objects.user import User
 from src.modules.persistence import users
 
-levels = {
+levels: dict = {
     "admin": 2,
     "user": 1
 }
@@ -24,7 +24,7 @@ def create_user(username: str, password: str, level: str) -> list:
         if user.username == username:
             return [False, "Error, user already exists"]
 
-    new_user = User()
+    new_user: User = User()
     new_user.level = levels.get(level)
     new_user.username = username
     new_user.password = password
@@ -38,7 +38,7 @@ def check_user_credentials(username: str, password: str) -> int:
     @return[int]    Returns admin level of user if valid credentials, else False
     """
     for user in users:
-        admin_level = user.get_admin_level(username, password)
+        admin_level: int = user.get_admin_level(username, password)
         if admin_level is not None:
             return admin_level
     return False

@@ -31,8 +31,8 @@ class Issue(object):
     def __init__(self, id) -> None:
         self.timestamp = time.time()
         self.id = id
-        self.title = None
-        self.info = None
-        self.priority = None
-        self.tags = []
-        self.archived = False
+        self.title: str = None
+        self.info: str = None
+        self.priority: int = None
+        self.tags: list = []
+        self.archived: bool = False

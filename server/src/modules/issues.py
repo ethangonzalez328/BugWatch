@@ -20,7 +20,7 @@ def change_property(issue_id: str, prop: str, new_val: str) -> dict:
     @param new_val[str]     New value of property
     @return[dict]           Dictionary of updated issue
     """
-    issue = _return_issue_from_id(issue_id)
+    issue: Issue = _return_issue_from_id(issue_id)
     if prop == "title":
         issue.title = new_val
     elif prop == "info":
@@ -38,7 +38,7 @@ def add_tag(issue_id: str, tag: str) -> dict:
     @param tag[str]         Tag to add to issue
     @return[dict]           Dictionary of updated issue
     """
-    issue = _return_issue_from_id(issue_id)
+    issue: Issue = _return_issue_from_id(issue_id)
     issue.tags.append(tag)
     return issue.obj_to_dict()
 
@@ -49,7 +49,7 @@ def remove_tag(issue_id: str, tag: str) -> dict:
     @param tag[str]         Tag to remove from issue
     @return[dict]           Dictionary of updated issue
     """
-    issue = _return_issue_from_id(issue_id)
+    issue: Issue = _return_issue_from_id(issue_id)
     issue.tags.remove(tag)
     return issue.issobj_to_dictue_obj()
 
@@ -60,7 +60,7 @@ def create_issue(title: str, info: str) -> list:
     @param info[str]    Info/description of new issue
     @return[list]       Returns list as [New issue ID, dictionary of new issue]
     """
-    issue = Issue(len(issues))
+    issue: Issue = Issue(len(issues))
     issue.title = title
     issue.info = info
     issue.priority = 3
@@ -72,8 +72,8 @@ def return_issues() -> dict:
     Returns all issues as dictionary
     @return[dict]       Dictionary of all issues organized with {active, archived} issues
     """
-    active_issues = []
-    archived_issues = []
+    active_issues: list = []
+    archived_issues: list = []
     for issue in issues:
         if issue.archived is False:
             active_issues.append(issue.obj_to_dict())
