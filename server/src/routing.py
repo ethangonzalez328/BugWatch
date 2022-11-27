@@ -11,7 +11,7 @@ from src.modules.issues import return_issues, create_issue, change_property
 def _check_user() -> str: # /api/login/
     """
     GET
-    Checks if a user can login, returns bool
+    Checks if a user can login, returns admin level or false
     Body {username, password}
     """
     body = request.json
