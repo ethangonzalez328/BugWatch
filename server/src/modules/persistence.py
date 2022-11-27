@@ -1,9 +1,12 @@
 import atexit
 from sqlitedict import SqliteDict
+
 from src.modules.objects.issue import Issue
 from src.modules.objects.user import User
 
+
 db: dict = SqliteDict("data.sqlite", autocommit=True) # Database with autocommit on
+
 
 def _get_issues() -> list:
     """
@@ -22,6 +25,7 @@ def _get_issues() -> list:
         return temp_issues
     return []
 
+
 def _get_users() -> list:
     """
     Returns encoded list of users from database, or if no database creates list
@@ -39,6 +43,7 @@ def _get_users() -> list:
         return our_users
     return []
 
+
 def _save_issues() -> None:
     """
     Encodes issues into dictionary and updates database
@@ -48,6 +53,7 @@ def _save_issues() -> None:
         encoded_issues.append(issue.obj_to_dict())
     db['issues'] = encoded_issues
     print(f">> SAVED {len(db['issues'])} ISSUES")
+
 
 def _save_users() -> None:
     """

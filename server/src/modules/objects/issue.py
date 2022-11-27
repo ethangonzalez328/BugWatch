@@ -1,5 +1,6 @@
 import time
 
+
 class Issue(object):
     def obj_to_dict(self) -> dict:
         """
@@ -16,6 +17,7 @@ class Issue(object):
             "id": self.id
         }
 
+
     def update_from_db(self, input_dict) -> None:
         """
         Updates self object with inputted dictionary
@@ -27,6 +29,7 @@ class Issue(object):
         self.priority = int(input_dict['priority'])
         self.tags = input_dict['tags']
         self.archived = bool(input_dict['archived'])
+
 
     def __init__(self, id) -> None:
         self.timestamp = time.time()

@@ -1,11 +1,13 @@
 from enum import IntEnum
 
+
 class AdminLevel(IntEnum):
     """
     Admin level, either 1 for user, 2 for admin
     """
     USER = 1
     ADMIN = 2
+
 
 class User(object):
     def obj_to_dict(self) -> dict:
@@ -19,6 +21,7 @@ class User(object):
             "password": self.password
         }
 
+
     def get_admin_level(self, username, password) -> int:
         """
         Checks if the object matches a given username and password
@@ -30,6 +33,7 @@ class User(object):
             return None
         return self.level
     
+
     def update_from_db(self, input_dict) -> None:
         """
         Updates self object with inputted dictionary
@@ -38,6 +42,7 @@ class User(object):
         self.username = input_dict['username']
         self.password = input_dict['password']
 
+    
     def __init__(self) -> None:
         self.level: int = None
         self.username: str = None

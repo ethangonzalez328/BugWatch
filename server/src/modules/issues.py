@@ -1,6 +1,7 @@
 from src.modules.objects.issue import Issue
 from src.modules.persistence import issues
 
+
 def _return_issue_from_id(id: str) -> Issue:
     """
     Returns an issue from a string ID
@@ -11,6 +12,7 @@ def _return_issue_from_id(id: str) -> Issue:
         if issue.id == id:
             return issue
     return None
+
 
 def change_property(issue_id: str, prop: str, new_val: str) -> dict:
     """
@@ -31,6 +33,7 @@ def change_property(issue_id: str, prop: str, new_val: str) -> dict:
         issue.priority = int(new_val)
     return issue.obj_to_dict()
 
+
 def add_tag(issue_id: str, tag: str) -> dict:
     """
     Adds tag from issue given ID
@@ -42,6 +45,7 @@ def add_tag(issue_id: str, tag: str) -> dict:
     issue.tags.append(tag)
     return issue.obj_to_dict()
 
+
 def remove_tag(issue_id: str, tag: str) -> dict:
     """
     Removes tag from issue given ID
@@ -52,6 +56,7 @@ def remove_tag(issue_id: str, tag: str) -> dict:
     issue: Issue = _return_issue_from_id(issue_id)
     issue.tags.remove(tag)
     return issue.issobj_to_dictue_obj()
+
 
 def create_issue(title: str, info: str) -> list:
     """
@@ -66,6 +71,7 @@ def create_issue(title: str, info: str) -> list:
     issue.priority = 3
     issues.append(issue)
     return [issue.id, issue.obj_to_dict()]
+
 
 def return_issues() -> dict:
     """
@@ -84,5 +90,6 @@ def return_issues() -> dict:
         "active": active_issues, 
         "archived": archived_issues
     }
+
 
 #create_issue("wooo", "weee")

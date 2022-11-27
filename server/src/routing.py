@@ -3,8 +3,10 @@
 
 from flask import current_app as app
 from flask import request
+
 from src.modules.users import check_user_credentials, create_user
 from src.modules.issues import return_issues, create_issue, change_property
+
 
 def _check_user() -> str: # /api/login/
     """
@@ -16,6 +18,7 @@ def _check_user() -> str: # /api/login/
     username: str = body['username']
     password: str = body['password']
     return str(check_user_credentials(username, password))
+
 
 def _create_user() -> str: 
     """
@@ -29,6 +32,7 @@ def _create_user() -> str:
     admin_level: str = body['admin_level'] # Either "user" or "admin"
     return str(create_user(username, password, admin_level))
 
+
 def _create_issue() -> str:
     """
     POST
@@ -39,6 +43,7 @@ def _create_issue() -> str:
     title: str = body['title']
     info: str = body['info']
     return create_issue(title, info)
+
 
 def _edit_issue() -> str:
     """
@@ -52,12 +57,14 @@ def _edit_issue() -> str:
     new_val: str = body['new_val']
     return change_property(issue_id, prop, new_val)
 
+
 def _read_issues() -> dict:
     """
     GET
     Reads and returns a dictionary of active issues and archived issues
     """
     return return_issues()
+
 
 routes: dict = {
     "/api/user/login": [_check_user, 'GET'],
@@ -66,6 +73,7 @@ routes: dict = {
     "/api/issue/create": [_create_issue, 'POST'],
     "/api/issue/edit": [_edit_issue, 'POST']
 }
+
 
 def create_routes():
     """

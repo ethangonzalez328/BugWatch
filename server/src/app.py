@@ -15,6 +15,7 @@ def run_app(is_debug: bool=False) -> None:
     """
     app.run(debug=is_debug)
 
+
 def create_app() -> None:
     app_obj = Flask(__name__)
     app_obj.app_context().push()
