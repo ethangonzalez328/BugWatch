@@ -15,8 +15,11 @@ def create_server() -> None:
     print("Created routes")
 
     print("Running app")
-    App.run_app(True)
+    App.run_app(False)
         
 
 if __name__ == '__main__': 
-    create_server()
+    try:
+        create_server()
+    finally:
+        print(" Ended Server")
