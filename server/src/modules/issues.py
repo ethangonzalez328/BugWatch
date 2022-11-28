@@ -28,7 +28,7 @@ def change_property(issue_id: str, prop: str, new_val: str) -> dict:
     elif prop == "info":
         issue.info = new_val
     elif prop == "archive":
-        issue.archived = bool(new_val)
+        issue.archived = (new_val == 'True')
     elif prop == "priority":
         issue.priority = int(new_val)
     return issue.obj_to_dict()
