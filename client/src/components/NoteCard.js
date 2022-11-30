@@ -9,13 +9,13 @@ const useStyles = makeStyles({
 	// low: green, medium: yellow, high: red
 	avatar: {
 		backgroundColor: (note) => {
-			if (note.priority == '!') {
+			if (note.priority == 3) {
 				return green[500]
 			}
-			if (note.priority == '!!') {
+			if (note.priority == 2) {
 				return yellow[700]
 			}
-			if (note.priority == '!!!') {
+			if (note.priority == 1) {
 				return red[500]
 			}
 			return grey[500]
@@ -34,7 +34,7 @@ export default function NoteCard({note, handleDelete}) {
 					// Priority label
 					avatar={
 						<Avatar className={classes.avatar}>
-							{note.priority}
+							{" "}
 						</Avatar>
 					}
 					// Delete button
@@ -49,11 +49,11 @@ export default function NoteCard({note, handleDelete}) {
 				<CardContent>
 					{/* Note details */}
 					<Typography variant="body2" color="textPrimary">
-						{note.details}
+						{note.info}
 					</Typography>
 					{/* Note timestamp */}
 					<Typography variant="body2" color="textSecondary">
-						{format(parseJSON(note.timestamp), 'Y-MM-dd pp')}
+						{format(new Date(note.timestamp * 1000), 'Y-MM-dd pp')}
 					</Typography>
 				</CardContent>
 			</Card>

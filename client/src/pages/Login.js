@@ -11,19 +11,20 @@ const useStyles = makeStyles({
 	}
 })
 
-export default function Register({setLoginState, setUserid}) {
+export default function Login({setLoginState, setUserid}) {
 	const classes = useStyles()
 	const history = useHistory()
 	// Text and error data
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
+	const [level, setLevel] = useState(false)
 	const [loginError, setLoginError] = useState(false)
 	const [errorTxt, setErrorTxt] = useState('')
 
 	// Gets user data from JSON server
 	const [users, setUsers] = useState([])
 	useEffect(() => {
-		fetch('http://localhost:3000/login')  
+		fetch('http://localhost:3002/users')
 			.then(res => res.json())
 			.then(data => setUsers(data))
 	}, [])
@@ -37,6 +38,7 @@ export default function Register({setLoginState, setUserid}) {
 		// Initialize error state
 		setLoginError(false)
 
+		/*
 		// Check through all users
 		for (let id in users) {
 			let user = users[id];
@@ -47,8 +49,24 @@ export default function Register({setLoginState, setUserid}) {
 				history.push('app/')
 			}
 		}
-		setLoginError(true)
-		setErrorTxt('Incorrect username or password.')
+		*/
+		fetch('/api/user/login', {
+			method: 'POST',
+			headers: {"Content-type": "application/json"},
+			body: JSON.stringify({username, password})
+		}).then(res => res.json())
+		.then(data => setLevel(data))
+
+		console.log(level)
+
+		if (level == 1 || level == 2) {
+			setLoginState(true)
+			setUserid(level)
+			history.push('app/')
+		} else {
+			setLoginError(true)
+			setErrorTxt('Incorrect username or password.')
+		}
 	}
 
 	return (

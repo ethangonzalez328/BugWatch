@@ -18,17 +18,14 @@ export default function Register({setLoginState, setUserid}) {
 	const [username, setUsername] = useState('')
 	const [password, setPassword] = useState('')
 	const [password2, setPassword2] = useState('')
+	const [admin_level, setLevel] = useState("user")
+	const [response, setResponse] = useState([])
 	const [usernameError, setUsernameError] = useState(false)
 	const [passwordError, setPasswordError] = useState(false)
 	const [errorTxt, setErrorTxt] = useState('')
 
 	// Gets user data from JSON server
 	const [users, setUsers] = useState([])
-	useEffect(() => {
-		fetch('http://localhost:3000/users')  
-			.then(res => res.json())
-			.then(data => setUsers(data))
-	}, [])
 
 	// Handles events after register button is pressed
 	const handleSubmit = (e) => {
@@ -47,6 +44,23 @@ export default function Register({setLoginState, setUserid}) {
 			setErrorTxt('Password fields do not match')
 		// Otherwise, attempt to add a user
 		} else {
+			setLevel("user")
+			fetch('/api/user/create', {
+				method: 'POST',
+				headers: {"Content-type": "application/json"},
+				body: JSON.stringify({username, password, admin_level})
+			}).then(res => res.json())
+			// DOES NOT RETURN DATA PROPERLY, but the account is created
+			.then(data => setResponse(data))
+
+			console.log(response)
+
+			if (response == "[True, \"Successfully created user\"]") {
+				setLoginState(true)
+				history.push('/app')
+			}
+
+			/*
 			let user = null
 			// Check through all users
 			for (let id in users) {
@@ -63,12 +77,13 @@ export default function Register({setLoginState, setUserid}) {
 				setLoginState(true)
 				setUserid(user.id)
 				// Add to user db
-				fetch('http://localhost:3000/users', {
+				fetch('/api/user/create', {
 					method: 'POST',
 					headers: {"Content-type": "application/json"},
 					body: JSON.stringify({username, password})
 				}).then(() => history.push('/app'))
 			}
+			*/
 		}
 	}
 

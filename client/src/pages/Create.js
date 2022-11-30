@@ -12,14 +12,18 @@ const useStyles = makeStyles({
 	}
 })
 
-export default function Create({uid}) {
-	const classes = useStyles()
+export default function Create({loginState}) {
 	const history = useHistory()
+	if (!loginState) {
+		history.push("/")
+	}
+
+	const classes = useStyles()
 	// Text and error data
 	const [title, setTitle] = useState('')
-	const [details, setDetails] = useState('')
+	const [info, setInfo] = useState('')
 	const [titleError, setTitleError] = useState(false)
-	const [detailsError, setDetailsError] = useState(false)
+	const [infoError, setInfoError] = useState(false)
 	const [priority, setPriority] = useState("!")
 
 	// Handles events after submit button is pressed
@@ -29,22 +33,21 @@ export default function Create({uid}) {
 
 		// Initialize error states
 		setTitleError(false)
-		setDetailsError(false)
+		setInfoError(false)
 
 		// If title or detail fields are empty, return the respective error
 		if (title == '') {
 			setTitleError(true)
 		}
-		if (details == '') {
-			setDetailsError(true)
+		if (info == '') {
+			setInfoError(true)
 		}
 		// If title and detail fields are non-empty, save these values
-		if (title && details) {
-			const timestamp = new Date()
-			fetch('http://localhost:3001/notes', {
+		if (title && info) {
+			fetch('/api/issue/create', {
 				method: 'POST',
 				headers: {"Content-type": "application/json"},
-				body: JSON.stringify({title, details, priority, timestamp, uid})
+				body: JSON.stringify({title, info})
 			}).then(() => history.goBack())
 		}
 	}
@@ -75,7 +78,7 @@ export default function Create({uid}) {
 				/>
 				{/* Details field */}
 				<TextField
-					onChange={(e) => setDetails(e.target.value)}
+					onChange={(e) => setInfo(e.target.value)}
 					className={classes.field}
 					label="Details"
 					variant="outlined"
@@ -83,16 +86,16 @@ export default function Create({uid}) {
 					minRows={4}
 					fullWidth
 					required
-					error={detailsError}
+					error={infoError}
 				/>
 
 				{/* Priority selection */}
 				<FormControl className={classes.field}>
 					<FormLabel>Priority</FormLabel>
 					<RadioGroup value={priority} onChange={(e) => setPriority(e.target.value)}>
-						<FormControlLabel value="!" control={<Radio />} label="Low"/>
-						<FormControlLabel value="!!" control={<Radio />} label="Medium"/>
-						<FormControlLabel value="!!!" control={<Radio />} label="High"/>
+						<FormControlLabel value={3} control={<Radio />} label="Low"/>
+						<FormControlLabel value={2} control={<Radio />} label="Medium"/>
+						<FormControlLabel value={1} control={<Radio />} label="High"/>
 					</RadioGroup>
 				</FormControl>
 

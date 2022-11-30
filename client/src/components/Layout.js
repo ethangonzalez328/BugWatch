@@ -2,7 +2,7 @@ import React from 'react'
 import { makeStyles, Drawer, Typography } from '@material-ui/core'
 import { List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core'
 import { AppBar, Toolbar } from '@material-ui/core'
-import { AddCircleOutlineOutlined, SubjectOutlined } from '@material-ui/icons'
+import { AddCircleOutlineOutlined, SubjectOutlined, LogoutIcon } from '@material-ui/icons'
 import { useHistory, useLocation } from 'react-router-dom'
 
 const drawerWidth = 240
@@ -108,7 +108,6 @@ export default function Layout({children}) {
 							button
 							key={item.text}
 							onClick={() => history.push(item.path)}
-							
 						>
 							<ListItemIcon>{item.icon}</ListItemIcon>
 							<ListItemText primary={item.text}/>

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@material-ui/core'
 import { grey } from '@material-ui/core/colors'
 import { useState } from 'react'
@@ -39,6 +39,12 @@ function App() {
 						<Route path="/register">
 							<Register setLoginState={setLoginState} setUserid={setUserid}/>
 						</Route>
+						<Route path="/app">
+							<Notes loginState={loginState}/>
+						</Route>
+						<Route path="/create">
+							<Create loginState={loginState}/>
+						</Route>
 					</Switch>
 				</Router>
 			</ThemeProvider>
@@ -52,11 +58,11 @@ function App() {
 						<Switch>
 							{/* Bugs menu */}
 							<Route path="/app">
-								<Notes uid={userid}/>
+								<Notes loginState={loginState}/>
 							</Route>
 							{/* Create bug menu */}
 							<Route path="/create">
-								<Create uid={userid}/>
+								<Create loginState={loginState}/>
 							</Route>
 						</Switch>
 					</Layout>

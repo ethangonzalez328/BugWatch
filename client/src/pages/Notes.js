@@ -3,10 +3,16 @@ import { Container, IconButton } from '@material-ui/core'
 import NoteCard from '../components/NoteCard'
 import Masonry from 'react-masonry-css'
 import TextField from '@mui/material/TextField'
+import { useHistory } from 'react-router-dom'
 
 
+export default function Notes({loginState}) {
+	const history = useHistory()
 
-export default function Notes({uid}) {
+	if (!loginState) {
+		history.push("/")
+	}
+
 	//dummy data to fetch for search
 	const searchTest = [
 		{
@@ -19,16 +25,29 @@ export default function Notes({uid}) {
 		}
 	]
 
+	// IMPORTANT:
+	//// make sure to use the same port as specified in the JSON server
+	//// make sure the port number is not the same as the one used to run the application
+	const notesDB = 'http://localhost:3002/users'
+	const [notes, setNotes] = useState([])
+
+	// Get notes from local JSON server, filtering by a specific user id
+	useEffect(() => {
+		fetch('/api/issue/get')
+			.then(res => res.json())
+			.then(data => setNotes(data.active))
+	}, [])
+
 	//lines 23-41 from https://akashmittal.com/search-json-reactjs/
-	const [searchedArray, setSearchedArray] = React.useState(searchTest);
+	const [searchedArray, setSearchedArray] = React.useState(notes);
   	const [searchString, setSearchString] = React.useState("");
 
 	React.useEffect(() => {
 		if (searchString.length === 0) {
-			setSearchedArray(searchTest);
+			setSearchedArray(notes);
 		} else {
 		  	const searchedObjects = [];
-			searchTest.forEach((testObject, index) => {
+			notes.forEach((testObject, index) => {
 				Object.values(testObject).every((onlyValues, valIndex) => {
 			  		if (onlyValues.toLowerCase().includes(searchString.toLowerCase())) {
 						searchedObjects.push(testObject);
@@ -40,18 +59,7 @@ export default function Notes({uid}) {
 		}
 	  }, [searchString]);
 
-	// IMPORTANT:
-	//// make sure to use the same port as specified in the JSON server
-	//// make sure the port number is not the same as the one used to run the application
-	const notesDB = 'http://localhost:3000/notes'
-	const [notes, setNotes] = useState([])
-
-	// Get notes from local JSON server, filtering by a specific user id
-	useEffect(() => {
-		fetch(notesDB)
-			.then(res => res.json())
-			.then(data => setNotes(data.filter(note => note.uid == uid)))
-	}, [])
+	
 
 	// Handles deletion of notes
 	const handleDelete = async (id) => {
