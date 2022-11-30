@@ -1,8 +1,10 @@
 import { useState, useEffect, setState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { CSVLink, CSVDownload } from "react-csv";
 
 // material-ui
 import {
+    Button,
     Grid,
     Typography,
     Fab
@@ -59,12 +61,41 @@ const DashboardDefault = () => {
             sev++
         }
     });
+    const dict = {
+        1: "Severe",
+        2: "Moderate",
+        3: "Normal"
+    }
+
+    let csvDataNew = []
+    csvDataNew.push(["Issue ID", "Title", "Description", "Timestamp", "Priority", "Tags", "Visibility"])
+    data.active.forEach(function (value, i) {
+        csvDataNew.push([value.id+1000, value.title, value.info, value.timestamp, dict[value.priority], value.tags, "Active"])
+    });
+    data.archived.forEach(function (value, i) {
+        csvDataNew.push([value.id+1000, value.title, value.info, value.timestamp, dict[value.priority], value.tags, "Archived"])
+    });
     return (
         <Grid container rowSpacing={4.5} columnSpacing={2.75}>
             {/* Top Bar */}
+            
+            
             <Grid item xs={12} sx={{ mb: -2.25 }}>
-                <Typography variant="h5">Dashboard</Typography>
+                <Grid container>
+                    <Typography variant="h5">Dashboard</Typography>
+                </Grid>
+                <Grid container justifyContent="flex-end">
+                    <Button variant="contained">
+                        <CSVLink
+                        data={csvDataNew}
+                        filename={"BugWatch-Report.csv"}
+                        >
+                            Download Report
+                        </CSVLink>
+                    </Button>
+                </Grid>
             </Grid>
+            
             <Grid item xs={12} sm={6} md={4} lg={4}>
                 <AnalyticEcommerce title="Active Issues" count={data.active.length} percentage={59.3} extra="Currently active issues" />
             </Grid>
