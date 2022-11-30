@@ -67,7 +67,7 @@ def _read_issues() -> dict:
 
 
 routes: dict = {
-    "/api/user/login": [_check_user, 'GET'],
+    "/api/user/login": [_check_user, 'POST'],
     "/api/user/create": [_create_user, 'POST'],
     "/api/issue/get": [_read_issues, 'GET'],
     "/api/issue/create": [_create_issue, 'POST'],
