@@ -5,19 +5,16 @@ from flask import current_app as app
 from flask import request
 
 from src.modules.users import check_user_credentials, create_user
-from src.modules.issues import return_issues, create_issue, change_property
+from src.modules.issues import return_issues, return_ind_issue, create_issue, change_property
 
 
-def _check_user() -> str: # /api/login/
+def _check_user(username: str, password: str) -> str: # /api/login/
     """
     GET
     Checks if a user can login, returns admin level or false
-    Body {username, password}
+    URL params username, password
     """
-    body: dict = request.json
-    username: str = body['username']
-    password: str = body['password']
-    return str(check_user_credentials(username, password))
+    return {"valid": str(check_user_credentials(username, password))}
 
 
 def _create_user() -> str: 
@@ -42,7 +39,9 @@ def _create_issue() -> str:
     body: dict = request.json
     title: str = body['title']
     info: str = body['info']
-    return create_issue(title, info)
+    priority: str = body['priority']
+    tags: str = body['tags']
+    return create_issue(title, info, priority, tags)
 
 
 def _edit_issue() -> str:
@@ -65,11 +64,20 @@ def _read_issues() -> dict:
     """
     return return_issues()
 
+def _read_ind_issue(id) -> dict:
+    """
+    GET
+    Reads and returns a dictionary of an issue given id
+    URL param issue_id
+    """
+    return return_ind_issue(id)
+
 
 routes: dict = {
-    "/api/user/login": [_check_user, 'POST'],
+    "/api/user/login/<username>/<password>": [_check_user, 'GET'],
     "/api/user/create": [_create_user, 'POST'],
-    "/api/issue/get": [_read_issues, 'GET'],
+    "/api/issue/get_all": [_read_issues, 'GET'],
+    "/api/issue/get_ind/<id>": [_read_ind_issue, 'GET'],
     "/api/issue/create": [_create_issue, 'POST'],
     "/api/issue/edit": [_edit_issue, 'POST']
 }
